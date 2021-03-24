@@ -1,0 +1,6 @@
+conf/conf.php
+.vscode
+composer.phar
+composer.lock
+/vendor/
+database/*.sqlite3
