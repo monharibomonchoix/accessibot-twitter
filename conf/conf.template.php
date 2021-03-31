@@ -3,10 +3,41 @@
 class Conf
 {
   /**
+   * Doctrine parameters to connect database
+   */
+  private static $dbParams = [
+    "driver"   => "pdo_sqlite",
+    "path"     => __DIR__ . "/database/accessibot-twitter.sqlite3"
+  ];
+
+  /**
+   * Conversation ID for PMs
+   * @var int
+   */
+  private static $convId = -1;
+
+  /**
+   * Twitter access token
+   */
+  private static $accessToken = "THIS MUST BE KEPT SECRET";
+
+  /**
+   * Twitter access secret token
+   */
+  private static $accessTokenSecret = "THIS MUST BE KEPT SECRET";
+
+  /**
    * User ID to monitor
    * @var int $userId
    */
   private static $userId = -1;
+
+  /**
+   * User TN to monitor
+   * @var string $userTN
+   */
+
+  private static $userTN = "@YOUR_TN";
 
   /**
    * Variable set to true one Init done
@@ -43,18 +74,18 @@ class Conf
 
   /**
    * Get connection
-   * @return \PDO
+   * @return array
    */ 
-  public static function getConnection()
+  public static function GetConnection()
   {
-    return Conf::$connection;
+    return Conf::$dbParams;
   }
 
   /**
    * Get Twitter API V1 Key
    * @return string
    */
-  public function getTwitterApiKey()
+  public function GetTwitterApiKey()
   {
     return Conf::$twitterApiKey;
   }
@@ -63,7 +94,7 @@ class Conf
    * Get Twitter API V1 Secret Key
    * @return string
    */
-  public function getTwitterApiSecretKey()
+  public function GetTwitterApiSecretKey()
   {
     return Conf::$twitterApiSecretKey;
   }
@@ -72,7 +103,7 @@ class Conf
    * Get initialization
    * @return bool
    */
-  public static function getIsInitialized()
+  public static function GetIsInitialized()
   {
     return Conf::$isInitialized;
   }
@@ -81,36 +112,59 @@ class Conf
    * Get Bearer token (for V2 API)
    * @return string
    */
-  public static function getBearerToken()
+  public static function GetBearerToken()
   {
     return Conf::$BearerToken;
   }
 
   /**
-   * @return void
+   * Get the user ID of monitored user
+   * @return int
    */
-  function Init()
-  {
-    $pdoString = "sqlite:" . dirname(__FILE__) . "/../database/accessibot-twitter.sqlite3";
-    
-    if (Conf::$isInitialized == false)
-    {
-      try
-      {
-        Conf::$connection = new PDO($pdoString);
-        Conf::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        Conf::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      }
-      catch(Exception $e)
-      {
-        $message = "Can't open database : ".$e->getMessage();
-        die($message);
-      }
-      Conf::$isInitialized = true;
 
-      Database::Update();
-    }
+  public static function GetUserId()
+  {
+    return Conf::$userId;
+  }
+
+  /**
+   * Get the user TN of monitored user
+   * @return int
+   */
+
+  public static function GetUserTN()
+  {
+    return Conf::$userTN;
+  }
+
+  /**
+   * Get the message ID of PMs
+   * @return int
+   */
+
+  public static function GetConvId()
+  {
+    return Conf::$convId;
+  }
+
+  /**
+   * Get the access token for V1.1 Twitter API
+   * @return string
+   */
+
+  public static function GetAccessToken()
+  {
+    return Conf::$accessToken;
+  }
+
+  /**
+   * Get the access secret token for V1.1 Twitter API
+   * @return string
+   */
+
+  public static function GetAccessTokenSecret()
+  {
+    return Conf::$accessTokenSecret;
   }
 }
 
-?>

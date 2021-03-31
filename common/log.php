@@ -6,7 +6,7 @@ define("MESSAGE_LOG_ERROR", 2);
 
 class LogMessage
 {
-  public static function log(string $message, int $type = MESSAGE_LOG_INFO)
+  public static function Log(string $message, int $type = MESSAGE_LOG_INFO)
   {
     echo "[" . date('Y-m-d H:i:s') . "] ";
 

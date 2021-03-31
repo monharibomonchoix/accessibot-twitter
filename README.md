@@ -2,10 +2,10 @@
 
 Un bot à base de PHP, permettant à une communauté de volontaires de rendre
 Twitter plus accessible. Il recherche toutes les mentions de son @, et
-envoie les tweets dans une conversation privée.
+retweete les messages où il est mentionné dans le texte.
 
-Le but étant de réunir les gens dans la conversation privée, afin qu'ils
-puissent voir les tweets n'étant pas assez accessible.
+Le but étant de suivre le bot, afin de pouvoir voir les tweets n'étant pas
+assez accessible.
 
 Il appartient ensuite à la communauté de décrire le tweet (pour les photos
 manquant de ALT par exemple), de retranscrire les discours et/ou de corriger
