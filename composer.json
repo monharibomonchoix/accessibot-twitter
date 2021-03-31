@@ -1,0 +1,12 @@
+{
+    "name": "mioux/accessibot",
+    "description": "Make Twitter a little more accessible",
+    "license": "MIT",
+    "require": {
+        "abraham/twitteroauth": "^2.0",
+        "doctrine/orm": "^2.8"
+    },
+    "autoload": {
+        "psr-4": { "Database\\Entity\\": "common/Entity" }
+    }
+}
