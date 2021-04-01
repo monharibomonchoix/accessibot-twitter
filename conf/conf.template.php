@@ -7,7 +7,7 @@ class Conf
    */
   private static $dbParams = [
     "driver"   => "pdo_sqlite",
-    "path"     => __DIR__ . "/database/accessibot-twitter.sqlite3"
+    "path"     => __DIR__ . "/../database/accessibot-twitter.sqlite3"
   ];
 
   /**

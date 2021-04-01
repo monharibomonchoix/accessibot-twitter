@@ -83,6 +83,9 @@
     }
   }
 
-  LogMessage::Log($retweeted . " tweets retweeted.", MESSAGE_LOG_INFO);
+  if ($retweeted > 0)
+  {
+    LogMessage::Log($retweeted . " tweets retweeted.", MESSAGE_LOG_INFO);
+  }
 
   $entityManager->flush();
