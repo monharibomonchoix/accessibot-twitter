@@ -24,7 +24,7 @@
       {
         ++$added;
         $new_tweet = new \Database\Entity\Tweets();
-        $new_tweet->setId($tweet["id"]);
+        $new_tweet->setTweetId($tweet["id"]);
         $new_tweet->setFetchedDate(date_create($tweet["created_at"]));
 
         $entityManager->persist($new_tweet);
@@ -40,6 +40,29 @@
   {
     $twitter_start_time = new \Database\Entity\Params();
     $twitter_start_time->setParamName("twitter_start_time");
+  }
+  $twitter_start_time->setParamValue(date('Y-m-d\TH:i:s\Z'));
+  $entityManager->persist($twitter_start_time);
+  $entityManager->flush();
+
+  $awaitingTweets = $tweetsRepo->findBy([ "forwarded" => false ]);
+
+  $retweeted = 0;
+
+  // Sending retweets
+  foreach ($awaitingTweets as $current_tweet)
+  {
+    if (Twitter::Retweet($current_tweet->getTweetId()) == true)
+    {
+      ++$retweeted;
+      $current_tweet->setForwarded(true);
+      $entityManager->persist($current_tweet);
+    }
+  }
+
+  if ($retweeted > 0)
+  {
+    LogMessage::Log($retweeted . " tweets retweeted.", MESSAGE_LOG_INFO);
   }
   $twitter_start_time->setParamValue(date('Y-m-d\TH:i:s\Z'));
   $entityManager->persist($twitter_start_time);
