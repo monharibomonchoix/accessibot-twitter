@@ -32,10 +32,36 @@
           integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
           crossorigin="anonymous">
   </script>
-  <script async
-    custom-element="amp-twitter"
-    src="https://cdn.ampproject.org/v0/amp-twitter-0.1.js">
-</script>
+  <script id="twitter-wjs" 
+    type="text/javascript" 
+    async defer 
+    src="//platform.twitter.com/widgets.js">
+    </script>
+    
+    <script>
+    function setDone(id)
+    {
+      req = new XMLHttpRequest();
+      req.onreadystatechange = function()
+        {
+          if (req.readyState == 4) 
+          { 
+            if(req.status  == 200) 
+            {
+              tr = window.document.getElementById("tr_" + req.responseText);
+              tr.parentNode.removeChild(tr);
+            }
+            else 
+            {
+              alert("Erreur\n" + req.responseText);
+            }
+          }
+        };
+    
+      req.open("GET", "ajax.php?tweet_id=" + id,  true); 
+      req.send(null); 
+    }
+  </script>
 
 <script>
   function setDone(id)
@@ -79,8 +105,19 @@
 
   foreach ($awaitingTweets as $current_tweet)
   {
-    echo "<tr id=\"tr_" . $current_tweet->getId() . "\"><th scope=\"row\">" . $current_tweet->getTweetId() . "</th>";
-    echo "<td><amp-twitter data-tweetid=\"" . $current_tweet->getTweetId() . "\" layout=\"responsive\"></td>";
+    $tweet_json = json_decode(file_get_contents("https://publish.twitter.com/oembed?url=https://twitter.com/Twitter/status/" . $current_tweet->getTweetId()));
+
+    if ($tweet_json != null && isset($tweet_json->html) == true)
+    {
+      $tweet_content = $tweet_json->html;
+    }
+    else
+    {
+      $tweet_content = "Cannot retreive tweet";
+    }
+
+    echo "<tr id=\"tr_" . $current_tweet->getId() . "\"><th scope=\"row\"><a href=\"https://twitter.com/Twitter/status/" . $current_tweet->getTweetId() . "\">" . $current_tweet->getTweetId() . "</a></th>";
+    echo "<td>" . $tweet_content . "</td>";
     echo "<td><button type=\"button\" class=\"btn btn-success\" onclick=\"javascript:setDone(" . $current_tweet->getId() . ")\">✅</button></td>";
   }
 ?>
