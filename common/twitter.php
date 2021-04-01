@@ -64,4 +64,19 @@ class Twitter
 
       return ($twitterConnection->getLastHttpCode() == 200);
     }
+
+    /**
+     * Send MP to conversation
+     * @return bool
+     */
+
+    public static function UnRetweet($id)
+    {
+      $twitterConnection = new TwitterOAuthTwitterOAuth(Conf::GetTwitterApiKey(), Conf::GetTwitterApiSecretKey(), Conf::GetAccessToken(), Conf::GetAccessTokenSecret());
+      $params = [ ];
+
+      $content = $twitterConnection->post("statuses/unretweet/" . $id, $params, true);
+
+      return ($twitterConnection->getLastHttpCode() == 200);
+    }
   }

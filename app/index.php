@@ -37,6 +37,31 @@
     src="https://cdn.ampproject.org/v0/amp-twitter-0.1.js">
 </script>
 
+<script>
+  function setDone(id)
+  {
+    req = new XMLHttpRequest();
+    req.onreadystatechange = function()
+      {
+        if (req.readyState == 4) 
+        { 
+          if(req.status  == 200) 
+          {
+            tr = window.document.getElementById("tr_" + req.responseText);
+            tr.parentNode.removeChild(tr);
+          }
+          else 
+          {
+            alert("Erreur\n" + req.responseText);
+          }
+        }
+      };
+   
+    req.open("GET", "ajax.php?tweet_id=" + id,  true); 
+    req.send(null); 
+  }
+</script>
+
   <div>
     <table class="table table-striped table-hover">
       <thead>
@@ -54,9 +79,9 @@
 
   foreach ($awaitingTweets as $current_tweet)
   {
-    echo "<tr><th scope=\"row\">" . $current_tweet->getId() . "</th>";
-    echo "<td><amp-twitter data-tweetid=\"" . $current_tweet->getId() . "\" layout=\"responsive\"></td>";
-    echo "<td><button type=\"button\" class=\"btn btn-success\">✅</button></td>";
+    echo "<tr id=\"tr_" . $current_tweet->getId() . "\"><th scope=\"row\">" . $current_tweet->getTweetId() . "</th>";
+    echo "<td><amp-twitter data-tweetid=\"" . $current_tweet->getTweetId() . "\" layout=\"responsive\"></td>";
+    echo "<td><button type=\"button\" class=\"btn btn-success\" onclick=\"javascript:setDone(" . $current_tweet->getId() . ")\">✅</button></td>";
   }
 ?>
       </tbody>
